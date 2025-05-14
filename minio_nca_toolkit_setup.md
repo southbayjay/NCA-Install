@@ -1,4 +1,3 @@
----
 # Prerequisite: Update Ubuntu and Install Docker with Docker Compose
 
 Before proceeding, ensure your system is up to date and Docker (with Docker Compose) is installed. Run the following commands on Ubuntu:
