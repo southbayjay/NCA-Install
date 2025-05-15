@@ -44,7 +44,7 @@ docker --version
 
 ```sh
 docker run -p 9000:9000 -p 9001:9001 --name miniio \
-  -v C:\Docker\minio-data:/data \
+  -v /home/ubuntu/minio-data:/data \
   -e MINIO_ROOT_USER=admin \
   -e MINIO_ROOT_PASSWORD=change_this_password \
   quay.io/minio/minio server /data --console-address ":9001"
