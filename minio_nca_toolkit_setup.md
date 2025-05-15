@@ -12,7 +12,7 @@ sudo apt update && sudo apt upgrade -y
 sudo apt install -y ca-certificates curl gnupg lsb-release
 ```
 
-**Add Docker’s official GPG key:**
+**Add Docker's official GPG key:**
 ```sh
 sudo install -m 0755 -d /etc/apt/keyrings
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
@@ -42,12 +42,35 @@ docker --version
 
 ## 1. Launch MiniIO via Docker
 
+**Prepare the Data Directory and Permissions:**
 ```sh
-docker run -p 9000:9000 -p 9001:9001 --name miniio \
+# Create the directory for MinIO data
+mkdir -p /home/ubuntu/minio-data
+```
+
+**Launch MinIO Container:**
+```sh
+docker run -d \
+  -p 9000:9000 \
+  -p 9001:9001 \
+  --name miniio \
   -v /home/ubuntu/minio-data:/data \
   -e MINIO_ROOT_USER=admin \
   -e MINIO_ROOT_PASSWORD=change_this_password \
+  --restart always \
   quay.io/minio/minio server /data --console-address ":9001"
+```
+
+**Verify MinIO Container:**
+```sh
+# Check if the container is running (shows all containers including stopped ones)
+docker ps -a | grep miniio
+
+# Check container status
+docker container inspect -f '{{.State.Status}}' miniio 2>/dev/null || echo "Container not found"
+
+# If the container is not running, check logs for errors
+docker logs miniio 2>/dev/null || echo "Cannot get logs - container may not exist"
 ```
 
 ## 2. Access the MiniIO Console
